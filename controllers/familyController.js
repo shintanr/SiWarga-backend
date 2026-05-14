@@ -142,3 +142,57 @@ export const deleteFamily = async (req, res) => {
     });
   }
 };
+
+// upload file KK
+export const uploadKkFile = async (req, res) => {
+  try {
+    const familyId = req.params.familyId
+
+    const family = await Family.getFamilyById(familyId);
+
+    if (!family) {
+      return res.status(404).json({
+        success: false,
+        message: 'Data keluarga tidak ditemukan',
+        data: null,
+      });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'File tidak ditemukan',
+        data: null,
+      });
+    }
+
+    await Family.updateKkFile(familyId, req.file.filename);
+
+    res.status(200).json({
+      success: true,
+      message: 'File KK berhasil diupload',
+      data: {
+        filename: req.file.filename,
+        url: `/uploads/kk/${req.file.filename}`,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+
+    if (
+      error instanceof multer.MulterError ||
+      error.message === 'Format file tidak didukung'
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+        data: null,
+      });
+    }
+    res.status(500).json({
+      success: false,
+      message: 'Gagal mengupload file KK',
+      data: null,
+    });
+  }
+};

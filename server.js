@@ -1,5 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 import './db.js';
 import familyRoutes from './routes/familyRoutes.js';
@@ -10,6 +15,7 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+app.use('/uploads', express.static(join(__dirname, 'uploads')));
 
 app.get('/', (req, res) => {
   res.send('API Running');

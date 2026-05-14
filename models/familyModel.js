@@ -102,3 +102,13 @@ export const deleteFamily = async (id) => {
   );
   return result.affectedRows; // ngembaliin true kalo delete berhasil
 };
+
+// update kk_file
+
+export const updateKkFile = async (id, filename) => {
+  const [result] = await db.query(
+    'UPDATE families SET kk_file = ? WHERE id = ?',
+    [filename, id],
+  );
+    return result.affectedRows; // ngembaliin true kalo update berhasil
+};
