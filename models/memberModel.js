@@ -2,7 +2,7 @@ import db from "../db.js";
 
 // get semua anggota by family_id
 export const getMembersByFamilyId = async(familyId) => {
-    const [rows] = await db.query("SELECT * FROM family_members WHERE family_id = ? ORDER BY hubungan ASC", [familyId]);
+    const [rows] = await db.query("SELECT * FROM family_members WHERE family_id = ? ORDER BY hubungan ASC, tanggal_lahir ASC", [familyId]);
     return rows;    
 }
 
@@ -21,7 +21,7 @@ export const createMember = async (familyId, data) => {
     const { nik, nama, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, pendidikan,pekerjaan, status_perkawinan, hubungan, kewarganegaraan, nama_ayah, nama_ibu} = data;
 
     const [result] = await db.query (
-        "INSERT INTO family_members (family_id, nik, nama, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, pendidikan, pekerjaan, status_perkawinan, hubungan, kewarganegaraan, nama_ayah, nama_ibu) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO family_members (family_id, nik, nama, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, pendidikan, pekerjaan, status_perkawinan, hubungan, kewarganegaraan, nama_ayah, nama_ibu) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         [familyId, nik, nama, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, pendidikan, pekerjaan, status_perkawinan, hubungan, kewarganegaraan, nama_ayah, nama_ibu]
     )
     return result.insertId; // ngembaliin id anggota yang baru dibuat

@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 
 import './db.js';
 import familyRoutes from './routes/familyRoutes.js';
+import memberRoutes from './routes/memberRoutes.js';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/families', familyRoutes);
+app.use('/api/families/:familyId/members', memberRoutes);
 
 const PORT = process.env.PORT || 6000;
 
