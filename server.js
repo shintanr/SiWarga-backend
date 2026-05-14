@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send('API Running');
+  res.send('API Running');
 });
 
 app.use('/api/families', familyRoutes);
@@ -21,5 +21,5 @@ app.use('/api/families/:familyId/members', memberRoutes);
 const PORT = process.env.PORT || 6000;
 
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });

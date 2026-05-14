@@ -3,23 +3,23 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const db = mysql.createPool({
+const db = mysql
+  .createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-    port: process.env.DB_PORT
-}).promise();
+    port: process.env.DB_PORT,
+  })
+  .promise();
 
-
-db.getConnection().then((connection) => {
-    console.log("Database connected successfully.");
+db.getConnection()
+  .then((connection) => {
+    console.log('Database connected successfully.');
     connection.release();
-}).catch((err) => {
-    console.error("Database connection failed: " + err.stack);
-});
-
+  })
+  .catch((err) => {
+    console.error('Database connection failed: ' + err.stack);
+  });
 
 export default db;
-
-
