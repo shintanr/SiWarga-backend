@@ -20,5 +20,29 @@ export const getFamilyById = async (id) => {
     const [members] = await db.query("SELECT * FROM family_members WHERE family_id = ?", [id]);
     return { ...family, members: members };
 }
-
 // POST / Create keluarga baru
+export const createFamily = async (data) => {
+    const { no_kk, kepala_keluarga, alamat, rt, rw, kelurahan, kecamatan, kota, provinsi, kode_pos} = data;
+
+    const [result] = await db.query(
+        "INSERT INTO families (no_kk, kepala_keluarga, alamat, rt, rw, kelurahan, kecamatan, kota, provinsi, kode_pos) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [no_kk, kepala_keluarga, alamat, rt, rw, kelurahan, kecamatan, kota, provinsi, kode_pos]
+    )
+    return result.insertId; // ngembaliin id keluarga yang baru dibuat
+}
+
+export const updateFamily =  async (id, data) => {
+    const { no_kk, kepala_keluarga, alamat, rt, rw, kelurahan, kecamatan, kota, provinsi, kode_pos} = data;
+
+    const [result] = await db.query(
+        "UPDATE families SET no_kk = ?, kepala_keluarga = ?, alamat = ?, rt = ?, rw = ?, kelurahan = ?, kecamatan = ?, kota = ?, provinsi = ?, kode_pos = ? WHERE id = ?",
+        [no_kk, kepala_keluarga, alamat, rt, rw, kelurahan, kecamatan, kota, provinsi, kode_pos, id]
+    );
+
+    return result.affectedRows; // ngembaliin true kalo update berhasil
+}
+
+export const deleteFamily = async (id) => {
+    const [result] = await db.query("DELETE FROM families WHERE id = ?", [id]);
+    return result.affectedRows; // ngembaliin true kalo delete berhasil
+}
