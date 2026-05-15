@@ -41,10 +41,11 @@ export const createFamily = async (data) => {
     kota,
     provinsi,
     kode_pos,
+    kk_file,
   } = data;
 
   const [result] = await db.query(
-    'INSERT INTO families (no_kk, kepala_keluarga, alamat, rt, rw, kelurahan, kecamatan, kota, provinsi, kode_pos) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO families (no_kk, kepala_keluarga, alamat, rt, rw, kelurahan, kecamatan, kota, provinsi, kode_pos, kk_file) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [
       no_kk,
       kepala_keluarga,
@@ -56,6 +57,7 @@ export const createFamily = async (data) => {
       kota,
       provinsi,
       kode_pos,
+      kk_file
     ],
   );
   return result.insertId; // ngembaliin id keluarga yang baru dibuat
@@ -73,10 +75,11 @@ export const updateFamily = async (id, data) => {
     kota,
     provinsi,
     kode_pos,
+    kk_file,
   } = data;
 
   const [result] = await db.query(
-    'UPDATE families SET no_kk = ?, kepala_keluarga = ?, alamat = ?, rt = ?, rw = ?, kelurahan = ?, kecamatan = ?, kota = ?, provinsi = ?, kode_pos = ? WHERE id = ?',
+    'UPDATE families SET no_kk = ?, kepala_keluarga = ?, alamat = ?, rt = ?, rw = ?, kelurahan = ?, kecamatan = ?, kota = ?, provinsi = ?, kode_pos = ?, kk_file = ? WHERE id = ?',
     [
       no_kk,
       kepala_keluarga,
@@ -88,6 +91,7 @@ export const updateFamily = async (id, data) => {
       kota,
       provinsi,
       kode_pos,
+      kk_file,
       id,
     ],
   );

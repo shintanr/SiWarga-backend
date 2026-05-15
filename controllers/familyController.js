@@ -1,4 +1,6 @@
 import * as Family from '../models/familyModel.js';
+import fs from 'fs';
+import path from 'path';
 
 // GET semua keluarga
 export const getAllFamilies = async (req, res) => {
@@ -50,13 +52,22 @@ export const getFamilyById = async (req, res) => {
 
 export const createFamily = async (req, res) => {
   try {
-    const familyData = req.body;
+    const familyData = {
+      ...req.body,
+      kk_file: req.file ? req.file.filename : null,
+    };
 
     const insertId = await Family.createFamily(familyData);
 
     res.status(201).json({
       message: 'Data keluarga berhasil ditambahkan',
-      data: { id: insertId },
+      data: {
+        id: insertId,
+        kk_file: familyData.kk_file,
+        kk_url: familyData.kk_file
+          ? '/uploads/kk/$familyData.kk_file'
+          : null,
+      },
     });
   } catch (error) {
     console.error(error);
@@ -76,7 +87,10 @@ export const createFamily = async (req, res) => {
 export const updateFamily = async (req, res) => {
   try {
     const familyId = req.params.id;
-    const familyData = req.body;
+    const familyData = {
+      ...req.body,
+      kk_file: req.file ? req.file.filename : null,
+    };
 
     // cek dulu apakah data ada
     const existingFamily = await Family.getFamilyById(familyId);
@@ -96,7 +110,12 @@ export const updateFamily = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Data keluarga berhasil diupdate',
-      data: updatedFamily,
+      data: {
+        ...updatedFamily,
+        kk_url: updatedFamily.kk_file
+          ? `/uploads/kk/${updatedFamily.kk_file}`
+          : null,
+      },
     });
   } catch (error) {
     console.error(error);
@@ -128,6 +147,16 @@ export const deleteFamily = async (req, res) => {
         message: 'Data keluarga tidak ditemukan',
       });
     }
+
+    if (existingFamily.kk_file) {
+      const filePath = path.join(process.cwd(), 'uploads', 'kk', existingFamily.kk_file);
+
+      // cek apakah file ada sebelum dihapus
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+
     await Family.deleteFamily(familyId);
 
     res.status(200).json({
@@ -146,7 +175,7 @@ export const deleteFamily = async (req, res) => {
 // upload file KK
 export const uploadKkFile = async (req, res) => {
   try {
-    const familyId = req.params.familyId
+    const familyId = req.params.familyId;
 
     const family = await Family.getFamilyById(familyId);
 
