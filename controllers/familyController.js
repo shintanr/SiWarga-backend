@@ -149,7 +149,12 @@ export const deleteFamily = async (req, res) => {
     }
 
     if (existingFamily.kk_file) {
-      const filePath = path.join(process.cwd(), 'uploads', 'kk', existingFamily.kk_file);
+      const filePath = path.join(
+        process.cwd(),
+        'uploads',
+        'kk',
+        existingFamily.kk_file,
+      );
 
       // cek apakah file ada sebelum dihapus
       if (fs.existsSync(filePath)) {
@@ -162,6 +167,11 @@ export const deleteFamily = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Data keluarga berhasil dihapus',
+      data: {
+        id: existingFamily.id,
+        kepala_keluarga: existingFamily.kepala_keluarga,
+        kk_file: existingFamily.kk_file,
+      },
     });
   } catch (error) {
     console.error(error);
