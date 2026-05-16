@@ -8,12 +8,26 @@ export const getAllFamilies = async (req, res) => {
 
     const search = req.query.search || '';
 
-    const families = await Family.getAllFamilies(search);
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+
+    const allowedLimits = [10, 25, 50, 100];
+
+    if (!allowedLimits.includes(limit)) {
+      return res.status(400).json({
+        success: false,
+        message: `Limit harus salah satu dari ${allowedLimits.join(', ')}`,
+        data: null,
+      });
+    }
+
+    const result = await Family.getAllFamilies(search, page, limit);
 
     res.status(200).json({
       success: true,
       message: 'Berhasil mengambil data keluarga',
-      data: families,
+      data: result.data,
+      pagination: result.pagination,
     });
   } catch (error) {
     console.error(error);

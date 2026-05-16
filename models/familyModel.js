@@ -2,9 +2,16 @@ import db from '../db.js';
 
 // GET semua keluarga
 
-export const getAllFamilies = async (search = '') => {
-
+export const getAllFamilies = async (
+  search = '',
+  page = 1,
+  limit = 10,
+) => {
+  const offset = (page - 1) * limit;
+  
   let query = 'SELECT * FROM families ';
+
+  const countQuery = 'SELECT COUNT(*) AS total FROM families ';
 
   const values = [];
 
@@ -16,11 +23,21 @@ export const getAllFamilies = async (search = '') => {
     values.push(keyword, keyword, keyword);
   }
 
-  query += 'ORDER BY created_at DESC';
+  query += 'ORDER BY created_at DESC limit ? offset ?';
 
-  const [rows] = await db.query(query, values);
+  const [rows] = await db.query(query, [...values, limit, offset]);
 
-  return rows;
+  const [total] = await db.query(countQuery, values);
+
+  return {
+    data: rows,
+    pagination: {
+      total,
+      current_page: page, 
+      per_page: limit,  
+      total_page: Math.ceil(total / limit),
+    }
+  }
 };
 
 // GET keluarga berdasarkan ID
