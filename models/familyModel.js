@@ -6,9 +6,23 @@ export const getAllFamilies = async (
   search = '',
   page = 1,
   limit = 10,
+  sortBy = 'created_at',
+  order = 'desc',
 ) => {
   const offset = (page - 1) * limit;
-  
+
+  const allowedSortBy = ['created_at', 'no_kk', 'kepala_keluarga'];
+  const allowedOrder = ['asc', 'desc'];
+
+  if (!allowedSortBy.includes(sortBy)) {
+    sortBy = 'created_at';
+  }
+
+  if (!allowedOrder.includes(order.toLowerCase())) {
+    order = 'desc';
+  }
+
+
   let query = 'SELECT * FROM families ';
 
   const countQuery = 'SELECT COUNT(*) AS total FROM families ';
@@ -17,17 +31,18 @@ export const getAllFamilies = async (
 
   if (search) {
     query += 'WHERE no_kk LIKE ? OR kepala_keluarga LIKE ?';
+      countQuery += 'WHERE no_kk LIKE ? OR kepala_keluarga LIKE ?';
 
     const keyword = `%${search}%`;
 
     values.push(keyword, keyword, keyword);
   }
 
-  query += 'ORDER BY created_at DESC limit ? offset ?';
+  query += `ORDER BY ${sortBy} ${order.toUpperCase()} limit ? offset ?`;
 
   const [rows] = await db.query(query, [...values, limit, offset]);
 
-  const [total] = await db.query(countQuery, values);
+  const [[{total}]] = await db.query(countQuery, values);
 
   return {
     data: rows,
