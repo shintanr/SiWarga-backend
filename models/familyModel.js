@@ -2,10 +2,24 @@ import db from '../db.js';
 
 // GET semua keluarga
 
-export const getAllFamilies = async () => {
-  const [rows] = await db.query(
-    'SELECT * FROM families ORDER BY created_at DESC',
-  );
+export const getAllFamilies = async (search = '') => {
+
+  let query = 'SELECT * FROM families ';
+
+  const values = [];
+
+  if (search) {
+    query += 'WHERE no_kk LIKE ? OR kepala_keluarga LIKE ?';
+
+    const keyword = `%${search}%`;
+
+    values.push(keyword, keyword, keyword);
+  }
+
+  query += 'ORDER BY created_at DESC';
+
+  const [rows] = await db.query(query, values);
+
   return rows;
 };
 
@@ -57,7 +71,7 @@ export const createFamily = async (data) => {
       kota,
       provinsi,
       kode_pos,
-      kk_file
+      kk_file,
     ],
   );
   return result.insertId; // ngembaliin id keluarga yang baru dibuat
@@ -114,5 +128,5 @@ export const updateKkFile = async (id, filename) => {
     'UPDATE families SET kk_file = ? WHERE id = ?',
     [filename, id],
   );
-    return result.affectedRows; // ngembaliin true kalo update berhasil
+  return result.affectedRows; // ngembaliin true kalo update berhasil
 };

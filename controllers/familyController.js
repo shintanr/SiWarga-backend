@@ -5,7 +5,10 @@ import path from 'path';
 // GET semua keluarga
 export const getAllFamilies = async (req, res) => {
   try {
-    const families = await Family.getAllFamilies();
+
+    const search = req.query.search || '';
+
+    const families = await Family.getAllFamilies(search);
 
     res.status(200).json({
       success: true,
@@ -65,7 +68,7 @@ export const createFamily = async (req, res) => {
         id: insertId,
         kk_file: familyData.kk_file,
         kk_url: familyData.kk_file
-          ? '/uploads/kk/$familyData.kk_file'
+          ? `/uploads/kk/${familyData.kk_file}`
           : null,
       },
     });
