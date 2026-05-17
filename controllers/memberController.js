@@ -1,6 +1,52 @@
 import * as Member from '../models/memberModel.js';
 import * as Family from '../models/familyModel.js';
 
+// Get semua anggota
+export const getAllMembers = async (req, res) => {
+  try {
+    const search = req.query.search || '';
+
+    const page = Math.max(Number(req.query.page) || 1, 1);
+    const limit = Number(req.query.limit) || 10;
+
+    const sortBy = req.query.sortBy || 'created_at';
+    const order = (req.query.order || 'desc').toLowerCase();
+
+    const allowedLimits = [10, 25, 50, 100];
+
+    if (!allowedLimits.includes(limit)) {
+      return res.status(400).json({
+        success: false,
+        message: `Limit harus salah satu dari ${allowedLimits.join(', ')}`,
+        data: null,
+      });
+    }
+
+    const result = await Member.getAllMembers(
+      search,
+      page,
+      limit,
+      sortBy,
+      order,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Berhasil mengambil data semua warga',
+      data: result.data,
+      pagination: result.pagination,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: 'Gagal mengambil data semua warga',
+      data: null,
+    });
+  }
+};
+
 // Get Semua anggota by Family_id
 export const getMembersByFamilyId = async (req, res) => {
   try {

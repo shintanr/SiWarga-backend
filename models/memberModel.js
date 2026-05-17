@@ -1,5 +1,95 @@
 import db from '../db.js';
 
+// get semua anggota / semua warga berdasarkan id
+export const getAllMembers = async (
+  search = '',
+  page = 1,
+  limit = 10,
+  sortBy = 'created_at',
+  order = 'desc'
+) => {
+  const offset = (page - 1) * limit;
+
+  const allowedSortBy = [
+    'created_at',
+    'nama',
+    'nik',
+    'tanggal_lahir',
+    'jenis_kelamin',
+    'hubungan',
+  ];
+
+  const allowedOrder = ['asc', 'desc'];
+
+  if (!allowedSortBy.includes(sortBy)) {
+    sortBy = 'created_at';
+  }
+
+  if (!allowedOrder.includes(order.toLowerCase())) {
+    order = 'desc';
+  }
+
+  let query = `
+    SELECT 
+      family_members.*,
+      families.no_kk,
+      families.kepala_keluarga,
+      families.alamat
+    FROM family_members
+    LEFT JOIN families ON family_members.family_id = families.id
+  `;
+
+  let countQuery = `
+    SELECT COUNT(*) AS total
+    FROM family_members
+    LEFT JOIN families ON family_members.family_id = families.id
+  `;
+
+  const values = [];
+
+  if (search) {
+    query += `
+      WHERE family_members.nama LIKE ?
+      OR family_members.nik LIKE ?
+      OR families.no_kk LIKE ?
+      OR families.kepala_keluarga LIKE ?
+    `;
+
+    countQuery += `
+      WHERE family_members.nama LIKE ?
+      OR family_members.nik LIKE ?
+      OR families.no_kk LIKE ?
+      OR families.kepala_keluarga LIKE ?
+    `;
+
+    const keyword = `%${search}%`;
+    values.push(keyword, keyword, keyword, keyword);
+  }
+
+  query += `
+    ORDER BY ${sortBy} ${order.toUpperCase()}
+    LIMIT ? OFFSET ?
+  `;
+
+  const [rows] = await db.query(query, [
+    ...values,
+    limit,
+    offset,
+  ]);
+
+  const [[{ total }]] = await db.query(countQuery, values);
+
+  return {
+    data: rows,
+    pagination: {
+      total,
+      current_page: page,
+      per_page: limit,
+      total_pages: Math.ceil(total / limit),
+    },
+  };
+};
+
 // get semua anggota by family_id
 export const getMembersByFamilyId = async (familyId) => {
   const [rows] = await db.query(

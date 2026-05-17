@@ -3,6 +3,7 @@ import express from 'express';
 
 const router = express.Router({ mergeParams: true });
 
+router.get('/', MemberController.getAllMembers);
 router.get('/', MemberController.getMembersByFamilyId);
 router.get('/:id', MemberController.getMemberById);
 router.post('/', MemberController.createMember);

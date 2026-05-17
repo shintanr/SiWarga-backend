@@ -24,6 +24,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/families', familyRoutes);
 app.use('/api/families/:familyId/members', memberRoutes);
+app.use('/api/members', memberRoutes);
 app.use('/api/dashboard', dasboardRoutes);
 
 
