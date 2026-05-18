@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import cors from "cors";
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -14,7 +15,7 @@ import dasboardRoutes from './routes/dashboardRoutes.js';
 dotenv.config();
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(join(__dirname, 'uploads')));
 

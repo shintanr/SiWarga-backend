@@ -77,9 +77,33 @@ export const createFamily = async (req, res) => {
       kk_file: req.file ? req.file.filename : null,
     };
 
+    const requiredFields = [
+      'no_kk',
+      'kepala_keluarga',
+      'alamat',
+      'rt',
+      'rw',
+      'kelurahan',
+      'kecamatan',
+      'kota',
+      'provinsi',
+      'kode_pos',
+    ];
+
+    for (const field of requiredFields) {
+      if (!familyData[field] || !familyData[field].trim()) {
+        return res.status(400).json({
+          success: false,
+          message: `${field} wajib diisi`,
+          data: null,
+        });
+      }
+    }
+
     const insertId = await Family.createFamily(familyData);
 
     res.status(201).json({
+      success: true,
       message: 'Data keluarga berhasil ditambahkan',
       data: {
         id: insertId,
@@ -91,15 +115,19 @@ export const createFamily = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    // handle duplicate no_kk
+
     if (error.code === 'ER_DUP_ENTRY') {
-      return res
-        .status(400)
-        .json({ message: 'No KK sudah terdaftar' });
+      return res.status(400).json({
+        success: false,
+        message: 'No KK sudah terdaftar',
+        data: null,
+      });
     }
+
     res.status(500).json({
+      success: false,
       message: 'Gagal menambahkan data keluarga',
-      error: error.message,
+      data: null,
     });
   }
 };
@@ -107,12 +135,7 @@ export const createFamily = async (req, res) => {
 export const updateFamily = async (req, res) => {
   try {
     const familyId = req.params.id;
-    const familyData = {
-      ...req.body,
-      kk_file: req.file ? req.file.filename : null,
-    };
 
-    // cek dulu apakah data ada
     const existingFamily = await Family.getFamilyById(familyId);
 
     if (!existingFamily) {
@@ -122,6 +145,11 @@ export const updateFamily = async (req, res) => {
         data: null,
       });
     }
+
+    const familyData = {
+      ...req.body,
+      kk_file: req.file ? req.file.filename : existingFamily.kk_file,
+    };
 
     await Family.updateFamily(familyId, familyData);
 
@@ -144,6 +172,7 @@ export const updateFamily = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'No KK sudah terdaftar',
+        data: null,
       });
     }
 

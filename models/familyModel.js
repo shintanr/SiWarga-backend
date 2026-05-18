@@ -22,37 +22,36 @@ export const getAllFamilies = async (
     order = 'desc';
   }
 
-
   let query = 'SELECT * FROM families ';
 
-  const countQuery = 'SELECT COUNT(*) AS total FROM families ';
+  let countQuery = 'SELECT COUNT(*) AS total FROM families ';
 
   const values = [];
 
   if (search) {
     query += 'WHERE no_kk LIKE ? OR kepala_keluarga LIKE ?';
-      countQuery += 'WHERE no_kk LIKE ? OR kepala_keluarga LIKE ?';
+    countQuery += 'WHERE no_kk LIKE ? OR kepala_keluarga LIKE ?';
 
     const keyword = `%${search}%`;
 
-    values.push(keyword, keyword, keyword);
+    values.push(keyword, keyword);
   }
 
   query += `ORDER BY ${sortBy} ${order.toUpperCase()} limit ? offset ?`;
 
   const [rows] = await db.query(query, [...values, limit, offset]);
 
-  const [[{total}]] = await db.query(countQuery, values);
+  const [[{ total }]] = await db.query(countQuery, values);
 
   return {
     data: rows,
     pagination: {
       total,
-      current_page: page, 
-      per_page: limit,  
-      total_page: Math.ceil(total / limit),
-    }
-  }
+      current_page: page,
+      per_page: limit,
+      total_pages: Math.ceil(total / limit),
+    },
+  };
 };
 
 // GET keluarga berdasarkan ID
@@ -69,7 +68,22 @@ export const getFamilyById = async (id) => {
   const family = families[0];
 
   const [members] = await db.query(
-    'SELECT * FROM family_members WHERE family_id = ?',
+    `
+  SELECT * 
+  FROM family_members 
+  WHERE family_id = ?
+  ORDER BY
+    CASE
+      WHEN hubungan = 'Kepala Keluarga' THEN 1
+      WHEN hubungan = 'Istri' THEN 2
+      WHEN hubungan = 'Suami' THEN 2
+      WHEN hubungan = 'Anak' THEN 3
+      WHEN hubungan = 'Cucu' THEN 4
+      WHEN hubungan = 'Orang Tua' THEN 5
+      ELSE 99
+    END,
+    tanggal_lahir ASC
+  `,
     [id],
   );
   return { ...family, members: members };
@@ -125,7 +139,21 @@ export const updateFamily = async (id, data) => {
   } = data;
 
   const [result] = await db.query(
-    'UPDATE families SET no_kk = ?, kepala_keluarga = ?, alamat = ?, rt = ?, rw = ?, kelurahan = ?, kecamatan = ?, kota = ?, provinsi = ?, kode_pos = ?, kk_file = ? WHERE id = ?',
+    `
+    UPDATE families SET
+      no_kk = ?,
+      kepala_keluarga = ?,
+      alamat = ?,
+      rt = ?,
+      rw = ?,
+      kelurahan = ?,
+      kecamatan = ?,
+      kota = ?,
+      provinsi = ?,
+      kode_pos = ?,
+      kk_file = ?
+    WHERE id = ?
+    `,
     [
       no_kk,
       kepala_keluarga,
@@ -142,7 +170,7 @@ export const updateFamily = async (id, data) => {
     ],
   );
 
-  return result.affectedRows; // ngembaliin true kalo update berhasil
+  return result.affectedRows;
 };
 
 export const deleteFamily = async (id) => {

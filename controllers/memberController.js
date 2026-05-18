@@ -114,10 +114,9 @@ export const createMember = async (req, res) => {
   try {
     const familyId = req.params.familyId;
 
-    // cek ada ngga keluarga deengan id itu
     const family = await Family.getFamilyById(familyId);
 
-    if (!family.id) {
+    if (!family) {
       return res.status(404).json({
         success: false,
         message: 'Data keluarga tidak ditemukan',
@@ -125,13 +124,11 @@ export const createMember = async (req, res) => {
       });
     }
 
-    // cek apakah sudah ada kepala keluarganya
     if (req.body.hubungan === 'Kepala Keluarga') {
-      const existingMembers =
-        await Member.getMembersByFamilyId(familyId);
+      const existingMembers = await Member.getMembersByFamilyId(familyId);
 
       const alreadyHasKepalaKeluarga = existingMembers.some(
-        (m) => m.hubungan === 'Kepala Keluarga',
+        (member) => member.hubungan === 'Kepala Keluarga',
       );
 
       if (alreadyHasKepalaKeluarga) {
@@ -144,15 +141,17 @@ export const createMember = async (req, res) => {
     }
 
     const insertId = await Member.createMember(familyId, req.body);
+
     res.status(201).json({
       success: true,
       message: 'Berhasil membuat anggota keluarga baru',
       data: { id: insertId },
     });
   } catch (error) {
-    console.error(error);
+    console.error('CREATE MEMBER ERROR CODE:', error.code);
+    console.error('CREATE MEMBER ERROR MESSAGE:', error.message);
 
-    if (error.code === 'ER_DUP_ENTRY') {
+    if (error.code === 'ER_DUP_ENTRY' || error.errno === 1062) {
       return res.status(400).json({
         success: false,
         message: 'NIK sudah terdaftar',
