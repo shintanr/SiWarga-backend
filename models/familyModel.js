@@ -188,5 +188,6 @@ export const updateKkFile = async (id, filename) => {
     'UPDATE families SET kk_file = ? WHERE id = ?',
     [filename, id],
   );
-  return result.affectedRows; // ngembaliin true kalo update berhasil
+
+  return result.affectedRows;
 };

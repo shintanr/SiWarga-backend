@@ -125,7 +125,8 @@ export const createMember = async (req, res) => {
     }
 
     if (req.body.hubungan === 'Kepala Keluarga') {
-      const existingMembers = await Member.getMembersByFamilyId(familyId);
+      const existingMembers =
+        await Member.getMembersByFamilyId(familyId);
 
       const alreadyHasKepalaKeluarga = existingMembers.some(
         (member) => member.hubungan === 'Kepala Keluarga',
@@ -238,3 +239,5 @@ export const deleteMember = async (req, res) => {
     });
   }
 };
+
+

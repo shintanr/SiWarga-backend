@@ -232,9 +232,96 @@ export const deleteFamily = async (req, res) => {
 };
 
 // upload file KK
+// export const uploadKkFile = async (req, res) => {
+//   try {
+//     const familyId = req.params.familyId;
+
+//     const family = await Family.getFamilyById(familyId);
+
+//     if (!family) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Data keluarga tidak ditemukan',
+//         data: null,
+//       });
+//     }
+
+//     if (!req.file) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'File tidak ditemukan',
+//         data: null,
+//       });
+//     }
+
+//     await Family.updateKkFile(familyId, req.file.filename);
+
+//     res.status(200).json({
+//       success: true,
+//       message: 'File KK berhasil diupload',
+//       data: {
+//         filename: req.file.filename,
+//         url: `/uploads/kk/${req.file.filename}`,
+//       },
+//     });
+//   } catch (error) {
+//     console.error(error);
+
+//     if (
+//       error instanceof multer.MulterError ||
+//       error.message === 'Format file tidak didukung'
+//     ) {
+//       return res.status(400).json({
+//         success: false,
+//         message: error.message,
+//         data: null,
+//       });
+//     }
+//     res.status(500).json({
+//       success: false,
+//       message: 'Gagal mengupload file KK',
+//       data: null,
+//     });
+//   }
+// };
+
+
+export const downloadKkFile = async (req, res) => {
+  try {
+    const familyId = req.params.id;
+
+    const family = await Family.getFamilyById(familyId);
+
+    if (!family || !family.kk_file) {
+      return res.status(404).json({
+        success: false,
+        message: 'File KK tidak ditemukan',
+        data: null,
+      });
+    }
+
+    const filePath = path.join(
+      process.cwd(),
+      'uploads',
+      'kk',
+      family.kk_file,
+    );
+
+    return res.download(filePath, family.kk_file);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: 'Gagal download file KK',
+      data: null,
+    });
+  }
+};
+
 export const uploadKkFile = async (req, res) => {
   try {
-    const familyId = req.params.familyId;
+    const familyId = req.params.id;
 
     const family = await Family.getFamilyById(familyId);
 
@@ -258,7 +345,7 @@ export const uploadKkFile = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'File KK berhasil diupload',
+      message: 'File KK berhasil diupdate',
       data: {
         filename: req.file.filename,
         url: `/uploads/kk/${req.file.filename}`,
@@ -267,19 +354,9 @@ export const uploadKkFile = async (req, res) => {
   } catch (error) {
     console.error(error);
 
-    if (
-      error instanceof multer.MulterError ||
-      error.message === 'Format file tidak didukung'
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: error.message,
-        data: null,
-      });
-    }
     res.status(500).json({
       success: false,
-      message: 'Gagal mengupload file KK',
+      message: 'Gagal mengupdate file KK',
       data: null,
     });
   }
