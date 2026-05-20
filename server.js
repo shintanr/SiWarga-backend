@@ -10,7 +10,9 @@ const __dirname = dirname(__filename)
 import './db.js';
 import familyRoutes from './routes/familyRoutes.js';
 import memberRoutes from './routes/memberRoutes.js';
-import dasboardRoutes from './routes/dashboardRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import { protect } from './middlewares/authMiddleware.js';
 
 dotenv.config();
 
@@ -23,10 +25,13 @@ app.get('/', (req, res) => {
   res.send('API Running');
 });
 
-app.use('/api/families', familyRoutes);
-app.use('/api/families/:familyId/members', memberRoutes);
-app.use('/api/members', memberRoutes);
-app.use('/api/dashboard', dasboardRoutes);
+
+app.use('/api/auth', authRoutes);
+app.use('/api/families', protect, familyRoutes);
+app.use('/api/families/:familyId/members', protect, memberRoutes);
+app.use('/api/members', protect, memberRoutes);
+app.use('/api/dashboard', protect, dashboardRoutes);
+
 
 
 const PORT = process.env.PORT || 6000;
