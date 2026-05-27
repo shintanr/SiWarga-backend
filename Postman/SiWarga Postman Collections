@@ -1,0 +1,686 @@
+{
+	"info": {
+		"_postman_id": "2437d6b9-a432-419d-be0d-c03536009d05",
+		"name": "RuangRT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42704905"
+	},
+	"item": [
+		{
+			"name": "00 - Health Check",
+			"item": [
+				{
+					"name": "Api Check",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "01 - Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Administrator\",\r\n  \"email\": \"admin@siwarga.com\",\r\n  \"password\": \"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02 - Dashboard Stats",
+			"item": [
+				{
+					"name": "Get Stats",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03 - Families",
+			"item": [
+				{
+					"name": "Get All Family",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Family By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/families/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"families",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Family Search",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Family Sort",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Family Pagination",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Create Family",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "no_kk",
+									"value": "3276010101010006",
+									"type": "text"
+								},
+								{
+									"key": "kepala_keluarga",
+									"value": "Dadan Sudarman\n",
+									"type": "text"
+								},
+								{
+									"key": "alamat",
+									"value": "Jl. Mawar No. 1032",
+									"type": "text"
+								},
+								{
+									"key": "rt",
+									"value": "001",
+									"type": "text"
+								},
+								{
+									"key": "rw",
+									"value": "002",
+									"type": "text"
+								},
+								{
+									"key": "kelurahan",
+									"value": "Sukarame",
+									"type": "text"
+								},
+								{
+									"key": "kecamatan",
+									"value": "Sukarame",
+									"type": "text"
+								},
+								{
+									"key": "kota",
+									"value": "Bandar Lampung",
+									"type": "text"
+								},
+								{
+									"key": "provinsi",
+									"value": "Lampung",
+									"type": "text"
+								},
+								{
+									"key": "kode Pos",
+									"value": "35131",
+									"type": "text"
+								},
+								{
+									"key": "kk_file",
+									"type": "file",
+									"src": "/C:/Users/Lenovo/Downloads/family.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/families",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"families"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Family",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "no_kk",
+									"value": "3276010101010006",
+									"type": "text"
+								},
+								{
+									"key": "kepala_keluarga",
+									"value": "Dadan Sudarman\n",
+									"type": "text"
+								},
+								{
+									"key": "alamat",
+									"value": "Jl. Mawar No. 1032",
+									"type": "text"
+								},
+								{
+									"key": "rt",
+									"value": "001",
+									"type": "text"
+								},
+								{
+									"key": "rw",
+									"value": "002",
+									"type": "text"
+								},
+								{
+									"key": "kelurahan",
+									"value": "Sukarame",
+									"type": "text"
+								},
+								{
+									"key": "kecamatan",
+									"value": "Sukarame",
+									"type": "text"
+								},
+								{
+									"key": "kota",
+									"value": "Bandar Lampung",
+									"type": "text"
+								},
+								{
+									"key": "provinsi",
+									"value": "Lampung",
+									"type": "text"
+								},
+								{
+									"key": "kode Pos",
+									"value": "35131",
+									"type": "text"
+								},
+								{
+									"key": "kk_file",
+									"type": "file",
+									"src": "/C:/Users/Lenovo/Downloads/family.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/families",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"families"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Family By ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"no_kk\": \"3276010101010001\",\r\n  \"kepala_keluarga\": \"Budi Santoso editt\",\r\n  \"alamat\": \"Jl. Mawar No. 109\",\r\n  \"rt\": \"001\",\r\n  \"rw\": \"002\",\r\n  \"kelurahan\": \"Sukarame\",\r\n  \"kecamatan\": \"Sukarame\",\r\n  \"kota\": \"Bandar Lampung\",\r\n  \"provinsi\": \"Lampung\",\r\n  \"kode_pos\": \"35131\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/families/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"families",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Family By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"no_kk\": \"3276010101010001\",\r\n  \"kepala_keluarga\": \"Budi Santoso\",\r\n  \"alamat\": \"Jl. Mawar No. 10\",\r\n  \"rt\": \"001\",\r\n  \"rw\": \"002\",\r\n  \"kelurahan\": \"Sukarame\",\r\n  \"kecamatan\": \"Sukarame\",\r\n  \"kota\": \"Bandar Lampung\",\r\n  \"provinsi\": \"Lampung\",\r\n  \"kode_pos\": \"35131\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/families/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"families",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04 - Family Member",
+			"item": [
+				{
+					"name": "Get All Members",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Member Search",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Member Sort",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Member Pagination",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Member by Family ID",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Member by ID",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Create Member",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"no_kk\": \"3276010101010001\",\r\n  \"kepala_keluarga\": \"Budi Santoso\",\r\n  \"alamat\": \"Jl. Mawar No. 10\",\r\n  \"rt\": \"001\",\r\n  \"rw\": \"002\",\r\n  \"kelurahan\": \"Sukarame\",\r\n  \"kecamatan\": \"Sukarame\",\r\n  \"kota\": \"Bandar Lampung\",\r\n  \"provinsi\": \"Lampung\",\r\n  \"kode_pos\": \"35131\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/families",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"families"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Member By ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"no_kk\": \"3276010101010001\",\r\n  \"kepala_keluarga\": \"Budi Santoso editt\",\r\n  \"alamat\": \"Jl. Mawar No. 109\",\r\n  \"rt\": \"001\",\r\n  \"rw\": \"002\",\r\n  \"kelurahan\": \"Sukarame\",\r\n  \"kecamatan\": \"Sukarame\",\r\n  \"kota\": \"Bandar Lampung\",\r\n  \"provinsi\": \"Lampung\",\r\n  \"kode_pos\": \"35131\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/families/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"families",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Member By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"no_kk\": \"3276010101010001\",\r\n  \"kepala_keluarga\": \"Budi Santoso\",\r\n  \"alamat\": \"Jl. Mawar No. 10\",\r\n  \"rt\": \"001\",\r\n  \"rw\": \"002\",\r\n  \"kelurahan\": \"Sukarame\",\r\n  \"kecamatan\": \"Sukarame\",\r\n  \"kota\": \"Bandar Lampung\",\r\n  \"provinsi\": \"Lampung\",\r\n  \"kode_pos\": \"35131\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/families/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"families",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "05 - Files",
+			"item": [
+				{
+					"name": "Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/families?BUDI",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"families"
+							],
+							"query": [
+								{
+									"key": "BUDI",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload KK",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "kk_file",
+									"type": "file",
+									"src": "/C:/Users/Lenovo/Downloads/71VXTof-2sL._AC_UF894,1000_QL80_.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/families/4/upload-kk",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"families",
+								"4",
+								"upload-kk"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "99 - Negative Test",
+			"item": [
+				{
+					"name": "Login Wrong Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"admin@siwarga.com\",\r\n  \"password\": \"admin1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Families without Token",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Family Invalid Token",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Create Family Duplicate no KK",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Create Family Empty Required Field",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Create Member Duplicate NIK",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Create Member Duplicate Kepala Keluarga",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Upload KK Unsuportted File Type",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Upload KK - File Too Large",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Family Detail - No found",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Family - Not found",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
